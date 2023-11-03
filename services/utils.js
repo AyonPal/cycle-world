@@ -23,4 +23,8 @@ function isPositiveNumber(x) {
   var num = parseFloat(x);
   return !isNaN(num) && num > 0;
 }
-module.exports = {estimateDistance, isValidLat, isValidLon, isPositiveNumber}
+function isHour(x) {
+  var num = parseFloat(x);
+  return !isNaN(num) && num > 0 && num <=24;
+}
+module.exports = {estimateDistance, isValidLat, isValidLon, isPositiveNumber, isHour}

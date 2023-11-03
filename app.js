@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config()
 const port = process.env.PORT || 3000;
 const {sequelize} = require("./models")
 const cors = require("cors")
-app.use(cors({origin: "http://localhost:5000"}))
+app.use(cors({origin: "http://localhost:3000"}))
 app.use(express.json());
 app.use(express.urlencoded());
 const userRoutes = require('./routes/users');

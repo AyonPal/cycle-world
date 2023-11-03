@@ -23,6 +23,12 @@ module.exports = {
   async register(req, res) {
     try {
       const {username, password} = req.body
+      if(!(username.length > 0)){
+        return res.status(401).json({error: "Username Empty"})
+      }
+      if(!(password.length > 4)){
+        return res.status(401).json({error: "Password Must be length of 8"})
+      }
       const user = await User.findOne({where: {username}});
       if(user){
         return res.status(401).json({error: "User already Registered"})

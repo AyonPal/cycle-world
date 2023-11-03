@@ -1,5 +1,5 @@
 const { Spot, User } = require('../models');
-const { estimateDistance, isPositiveNumber, isValidLat, isValidLon } = require('../services/utils');
+const { estimateDistance, isPositiveNumber, isValidLat, isValidLon, isHour } = require('../services/utils');
 
 module.exports = {
   async getSpotName(req, res) {
@@ -17,7 +17,7 @@ module.exports = {
   },
   async getSpots(req, res) {
     try {
-      const spots = await Spot.findAll({attributes: ["name"]});
+      const spots = await Spot.findAll({attributes: ["id", "name"]});
       return res.status(200).json({success: true, data: {spots}});
     } catch (error) {
         console.log(error)
@@ -36,7 +36,7 @@ module.exports = {
         if (!isPositiveNumber(speed)){
           return res.status(400).json({error: "Invalid Speed Value"})
         }
-        if (!isPositiveNumber(daily_cycle)){
+        if (!isHour(daily_cycle)){
           return res.status(400).json({error: "Invalid Cycle Per Day Value"})
         }
         const spot = await Spot.findByPk(spotId);
@@ -72,7 +72,7 @@ module.exports = {
         if (!isPositiveNumber(speed)){
             return res.status(400).json({error: "User Speed Invalid"})
         }
-        if (!isPositiveNumber(daily_cycle)){
+        if (!isHour(daily_cycle)){
             return res.status(400).json({error: "User Cycle Hr per Day Invalid"})
         }
         if(!spot){
@@ -84,7 +84,7 @@ module.exports = {
             const estimatedDays = Math.ceil(estimatedTime / daily_cycle)
             return res.status(200).json({success: true, data: {time: estimatedTime.toFixed(2), days: estimatedDays.toFixed(0)}});
         }else {
-            return res.status(200).json({success: true, data: {time: "0", days: "0", message: "Destination Unreachable"}});
+            return res.status(200).json({error: "Destination Unreachable"});
 
         }
     } catch (error) {
